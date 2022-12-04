@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra/base'
 require 'json'
 require 'dotenv'
@@ -8,6 +10,7 @@ require './app/api/v1/news'
 
 Dotenv.load('.env')
 
+# main application
 class Application < Sinatra::Base
   register Sinatra::CrossOrigin
 
@@ -15,10 +18,10 @@ class Application < Sinatra::Base
     enable :cross_origin
   end
 
-  options "*" do
-    response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
-    response.headers["Access-Control-Allow-Origin"] = "*"
+  options '*' do
+    response.headers['Allow'] = 'GET, PUT, POST, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token'
+    response.headers['Access-Control-Allow-Origin'] = '*'
     200
   end
 
@@ -26,12 +29,12 @@ class Application < Sinatra::Base
     response.headers['Access-Control-Allow-Origin'] = '*'
     content_type :json
   end
-  
+
   get '/api/v1/news' do
     status 200
     Api::V1::News.find(1).to_json
-  rescue
+  rescue StandardError
     status 404
-    { message: 'New not found' }
+    { message: 'News not found', error: 'NOT_FOUND' }
   end
 end
