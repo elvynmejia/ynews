@@ -15,7 +15,6 @@ class Application < Sinatra::Base
     enable :cross_origin
   end
 
-  # routes...
   options "*" do
     response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
@@ -27,11 +26,12 @@ class Application < Sinatra::Base
     response.headers['Access-Control-Allow-Origin'] = '*'
     content_type :json
   end
-
-  # work around Shopify API ActiveResource::UnauthorizedAccess error
+  
   get '/api/v1/news' do
-    Api::V1::News.news(1).to_json
+    status 200
+    Api::V1::News.find(1).to_json
   rescue
-    {}
+    status 404
+    { message: 'New not found' }
   end
 end
