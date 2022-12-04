@@ -1,9 +1,8 @@
 require './app'
 require 'spec_helper'
 require 'pry'
-# set :environment, :test
 
-describe 'News app' do
+describe 'Application' do
   describe "/api/v1/news" do
     specify "number of orders places" do
       get "/api/v1/news"

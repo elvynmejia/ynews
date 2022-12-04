@@ -4,6 +4,8 @@ require 'dotenv'
 require 'pry'
 require 'sinatra/cross_origin'
 
+require './app/api/v1/news'
+
 Dotenv.load('.env')
 
 class Application < Sinatra::Base
@@ -28,6 +30,8 @@ class Application < Sinatra::Base
 
   # work around Shopify API ActiveResource::UnauthorizedAccess error
   get '/api/v1/news' do
-    {}.to_json
+    Api::V1::News.news(1).to_json
+  rescue
+    {}
   end
 end
